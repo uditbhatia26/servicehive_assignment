@@ -67,29 +67,6 @@ State is managed using a strictly typed `UserState` dictionary that persists acr
 
 ---
 
-## 📱 WhatsApp Integration Strategy
-
-To integrate this agent with WhatsApp using Webhooks, I would implement the following architecture:
-
-1.  **WhatsApp Business API Setup:**
-    * Set up a Meta Developer app and configure the WhatsApp Product.
-    * Obtain a permanent access token and phone number ID.
-
-2.  **Webhook Endpoint (FastAPI/Flask):**
-    * Create a backend API (e.g., using FastAPI) to serve as the Webhook URL.
-    * This endpoint will listen for `POST` requests from WhatsApp containing user messages.
-
-3.  **Integration Logic:**
-    * **Receive Payload:** Parse the incoming JSON to extract the user's phone number (acting as the `thread_id` for state memory) and the text message.
-    * **Invoke Agent:** Pass the text and phone number to the LangGraph `chatbot.invoke()` function.
-    * **Process Response:** The agent processes the input, updates the state, and generates a text response.
-    * **Send Reply:** The backend sends the agent's response back to the user via a `POST` request to the WhatsApp API (`https://graph.facebook.com/v17.0/{phone_number_id}/messages`).
-
-4.  **Security:**
-    * Implement logic to verify the `X-Hub-Signature` header in the webhook to ensure requests legitimately originate from Meta.
-
----
-
 ## 📂 Project Structure
 * `app.py`: Streamlit frontend for chatting with the agent.
 * `chatbot.py`: Core logic containing the LangGraph definition, RAG setup, and tool nodes.
